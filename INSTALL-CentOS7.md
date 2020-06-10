@@ -32,6 +32,29 @@ EOF
 ```
 yum install -y elasticsearch
 ```
+
+###### Configure security
+Configure built-in users, take note of kibana and elastic credentials, in this case 
+
+- `kibana`:`kibanapassword`
+- `elastic`:`elasticpassword`
+
+```
+bin/elasticsearch-setup-passwords interactive
+```
+
+###### Create initial User
+
+```
+curl -X POST "elastic:elasticpassword@localhost:9200/_security/user/luis?pretty" -H 'Content-Type: application/json' -d'
+{
+  "password" : "chacon",
+  "roles" : [ "kibana_admin" ]
+}
+'
+```
+
+
 ###### Enable and start elasticsearch service
 ```
 systemctl daemon-reload
@@ -43,6 +66,17 @@ systemctl start elasticsearch
 ```
 yum install -y kibana
 ```
+
+###### Configure kibana Auth
+
+Update the following settings in the kibana.yml configuration file:
+```
+elasticsearch.username: "kibana"
+elasticsearch.password: "kibanapassword"
+
+xpack.security.encryptionKey: "something_at_least_32_characters"
+```
+
 ###### Enable and start kibana service
 ```
 systemctl daemon-reload
