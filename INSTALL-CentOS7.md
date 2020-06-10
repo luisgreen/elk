@@ -68,6 +68,11 @@ server {
 }
 EOF
 ```
+###### Selinux allowance
+```
+ sudo setsebool httpd_can_network_connect 1 -P
+```
+
 ###### Enable and start nginx service
 ```
 systemctl enable nginx
