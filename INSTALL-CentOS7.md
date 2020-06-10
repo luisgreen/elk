@@ -222,7 +222,7 @@ systemctl start td-agent
 add config
 
 ```
-<match my.logs>
+<match **>
   @type elasticsearch
   host localhost
   port 9200
@@ -231,6 +231,14 @@ add config
   password chacon
   index_name testing_logs
 </match>
+
+<source>
+  @type tail
+  path /var/log/httpd-access.log #...or where you placed your Apache access log
+  pos_file /var/log/td-agent/httpd-access.log.pos # This is where you record file position
+  tag nginx.access #fluentd tag!
+  format nginx # Do you have a custom format? You can write your own regex.
+</source>
 ```
 
 
