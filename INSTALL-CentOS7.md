@@ -17,9 +17,9 @@ rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 ###### Create Yum repository
 ```
 cat >>/etc/yum.repos.d/elk.repo<<EOF
-[ELK-6.x]
-name=ELK repository for 6.x packages
-baseurl=https://artifacts.elastic.co/packages/6.x/yum
+[elasticsearch]
+name=Elasticsearch repository for 7.x packages
+baseurl=https://artifacts.elastic.co/packages/7.x/yum
 gpgcheck=1
 gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
 enabled=1
