@@ -33,14 +33,36 @@ EOF
 yum install -y elasticsearch
 ```
 
+###### Enable and start elasticsearch service
+```
+systemctl daemon-reload
+systemctl enable elasticsearch
+systemctl start elasticsearch
+```
+
+
 ###### Configure security
+
+
+add to /etc/elasticsearch/elasticsearch.yml
+
+```
+xpack.security.enabled: true
+```
+
+and restart
+
+```
+systemctl restart elasticsearch
+```
+
 Configure built-in users, take note of kibana and elastic credentials, in this case 
 
-- `kibana`:`kibanapassword`
+- `kibana`:`elasticpassword`
 - `elastic`:`elasticpassword`
 
 ```
-bin/elasticsearch-setup-passwords interactive
+/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
 ```
 
 ###### Create initial SuperUser
@@ -54,13 +76,6 @@ curl -X POST "elastic:elasticpassword@localhost:9200/_security/user/luis?pretty"
 '
 ```
 
-
-###### Enable and start elasticsearch service
-```
-systemctl daemon-reload
-systemctl enable elasticsearch
-systemctl start elasticsearch
-```
 ### Kibana
 ###### Install kibana
 ```
@@ -69,10 +84,10 @@ yum install -y kibana
 
 ###### Configure kibana Auth
 
-Update the following settings in the kibana.yml configuration file:
+Update the following settings in the `/etc/kibana.yml` configuration file:
 ```
 elasticsearch.username: "kibana"
-elasticsearch.password: "kibanapassword"
+elasticsearch.password: "elasticpassword"
 
 xpack.security.encryptionKey: "something_at_least_32_characters"
 ```
@@ -241,9 +256,6 @@ systemctl start td-agent
 # fluent elasticsearch plugin
 td-agent-gem install fluent-plugin-nostat
 td-agent-gem install fluent-plugin-elasticsearch
-
-# /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-elasticsearch
-# /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-nostat
 ```
 
 Add config
