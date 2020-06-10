@@ -209,17 +209,41 @@ systemctl start filebeat
 
 ### Fluentd
 
+###### Preparation
+```
+yum install make automake gcc gcc-c++ kernel-devel patch libyaml-devel libffi-devel glibc-headers autoconf glibc-devel readline-devel zlib-devel openssl-devel bzip2 libtool bison
+```
+
+###### Ruby via ruby version manager
+```
+#ruby version manager
+
+gpg2 --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
+sudo gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+curl -sSL https://rvm.io/mpapis.asc | sudo gpg2 --import -
+curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg2 --import -
+    
+curl -L get.rvm.io | bash -s stable
+source /etc/profile.d/rvm.sh
+rvm install 2.5.0
+gem install fluentd -v 1.8.1
+```
+
+###### Fluentd itself
+
 ```
 curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent3.sh | sh
+td-agent-gem update
 
 systemctl enable td-agent
 systemctl start td-agent
 
 # fluent elasticsearch plugin
 /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-elasticsearch
+/opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-nostat
 ```
 
-add config
+Add config
 
 ```
 <match **>
@@ -238,6 +262,15 @@ add config
   pos_file /var/log/td-agent/httpd-access.log.pos # This is where you record file position
   tag nginx.access #fluentd tag!
   format nginx # Do you have a custom format? You can write your own regex.
+</source>
+
+gem install fluent-plugin-nostat
+
+<source>
+  @type nostat
+  run_interval 1
+  mode dstat # raw or dstat
+  output_type graphite # hash or graphite
 </source>
 ```
 
