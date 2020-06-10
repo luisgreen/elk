@@ -211,7 +211,7 @@ systemctl start filebeat
 
 ###### Preparation
 ```
-yum install make automake gcc gcc-c++ kernel-devel patch libyaml-devel libffi-devel glibc-headers autoconf glibc-devel readline-devel zlib-devel openssl-devel bzip2 libtool bison
+yum -y install make automake gcc gcc-c++ kernel-devel patch libyaml-devel libffi-devel glibc-headers autoconf glibc-devel readline-devel zlib-devel openssl-devel bzip2 libtool bison
 ```
 
 ###### Ruby via ruby version manager
@@ -225,8 +225,8 @@ curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg2 --import -
     
 curl -L get.rvm.io | bash -s stable
 source /etc/profile.d/rvm.sh
-rvm install 2.5.0
-gem install fluentd -v 1.8.1
+rvm install 2.6.0
+gem install fluentd
 ```
 
 ###### Fluentd itself
