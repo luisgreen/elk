@@ -239,8 +239,11 @@ systemctl enable td-agent
 systemctl start td-agent
 
 # fluent elasticsearch plugin
-/opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-elasticsearch
-/opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-nostat
+td-agent-gem install fluent-plugin-nostat
+td-agent-gem install fluent-plugin-elasticsearch
+
+# /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-elasticsearch
+# /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-nostat
 ```
 
 Add config
