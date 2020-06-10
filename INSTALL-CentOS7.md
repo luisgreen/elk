@@ -267,7 +267,7 @@ Add config
   port 9200
   logstash_format true
   user logstash_system
-  password chacon
+  password elasticpassword
   index_name testing_logs
 </match>
 
