@@ -205,6 +205,35 @@ scp server.example.com:/etc/pki/tls/certs/logstash.crt /etc/pki/tls/certs/
 systemctl enable filebeat
 systemctl start filebeat
 ```
+
+
+### Fluentd
+
+```
+curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent3.sh | sh
+
+systemctl enable td-agent
+systemctl start td-agent
+
+# fluent elasticsearch plugin
+/opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-elasticsearch
+```
+
+add config
+
+```
+<match my.logs>
+  @type elasticsearch
+  host localhost
+  port 9200
+  logstash_format true
+  user logstash_system
+  password chacon
+  index_name testing_logs
+</match>
+```
+
+
 ### Configure Kibana Dashboard
 All done. Now you can head to Kibana dashboard and add the index.
 
