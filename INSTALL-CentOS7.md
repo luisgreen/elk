@@ -43,13 +43,13 @@ Configure built-in users, take note of kibana and elastic credentials, in this c
 bin/elasticsearch-setup-passwords interactive
 ```
 
-###### Create initial User
+###### Create initial SuperUser
 
 ```
 curl -X POST "elastic:elasticpassword@localhost:9200/_security/user/luis?pretty" -H 'Content-Type: application/json' -d'
 {
   "password" : "chacon",
-  "roles" : [ "kibana_admin" ]
+  "roles" : [ "superuser" ]
 }
 '
 ```
