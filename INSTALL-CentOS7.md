@@ -279,6 +279,13 @@ Add config
   </buffer>
 </match>
 
+<source>
+  @type nostat
+  run_interval 1
+  mode dstat
+  output_type hash
+  tag host.stats
+</source>
 
 <source>
   @type tail
