@@ -263,27 +263,31 @@ Add config
 ```
 <match nginx.*>
   @type elasticsearch
-  host localhost
+  host 127.0.0.1
   port 9200
-  logstash_format true
-  user logstash_system
-  password elasticpassword
-  index_name testing_logs
+  logstash_format false
+  user log_agent
+  password log_agent
+  index_name production.${tag}
+  <buffer tag, time>
+    timekey 5s
+    timekey_wait 10s
+    flush_thread_count 2
+    flush_mode interval
+    flush_interval 5s
+    flush_at_shutdown true
+  </buffer>
 </match>
+
 
 <source>
   @type tail
   path /var/log/nginx/access.log
   pos_file /var/log/td-agent/nginx-access.log.pos
-  tag nginx.access #fluentd tag!
-  format nginx
-</source>
-
-<source>
-  @type nostat
-  run_interval 1
-  mode dstat # raw or dstat
-  output_type graphite # hash or graphite
+  tag nginx.access
+  <parse>
+    @type nginx
+  </parse>
 </source>
 ```
 
