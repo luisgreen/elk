@@ -261,26 +261,9 @@ td-agent-gem install fluent-plugin-elasticsearch
 Add config
 
 ```
-<match nginx.*>
-  @type elasticsearch
-  host 127.0.0.1
-  port 9200
-  logstash_format false
-  user log_agent
-  password log_agent
-  index_name production.${tag}
-  <buffer tag, time>
-    timekey 5s
-    timekey_wait 10s
-    flush_thread_count 2
-    flush_mode interval
-    flush_interval 5s
-    flush_at_shutdown true
-  </buffer>
-</match>
-
 <source>
   @type nostat
+  @log_level info
   run_interval 1
   mode dstat
   output_type hash
@@ -296,6 +279,40 @@ Add config
     @type nginx
   </parse>
 </source>
+
+<filter *.*>
+  @type record_transformer
+  enable_ruby true
+  <record>
+    hostname "#{Socket.gethostname}"
+    tag ${tag}
+  </record>
+</filter>
+
+<match *.*>
+  @type elasticsearch
+  host 127.0.0.1
+  user log_agent
+  password log_agent
+  port 9200
+  
+  include_tag_key true
+  include_timestamp true
+  type_name logs
+
+  index_name production.${tag}
+
+  reload_connections false
+
+  <buffer tag, time>
+    timekey 5s
+    timekey_wait 10s
+    flush_thread_count 2
+    flush_mode interval
+    flush_interval 5s
+    flush_at_shutdown true
+  </buffer>
+</match>
 ```
 
 
