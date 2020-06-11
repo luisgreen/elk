@@ -261,7 +261,7 @@ td-agent-gem install fluent-plugin-elasticsearch
 Add config
 
 ```
-<match **>
+<match nginx.*>
   @type elasticsearch
   host localhost
   port 9200
@@ -273,13 +273,11 @@ Add config
 
 <source>
   @type tail
-  path /var/log/httpd-access.log #...or where you placed your Apache access log
-  pos_file /var/log/td-agent/httpd-access.log.pos # This is where you record file position
+  path /var/log/nginx/access.log
+  pos_file /var/log/td-agent/nginx-access.log.pos
   tag nginx.access #fluentd tag!
-  format nginx # Do you have a custom format? You can write your own regex.
+  format nginx
 </source>
-
-gem install fluent-plugin-nostat
 
 <source>
   @type nostat
